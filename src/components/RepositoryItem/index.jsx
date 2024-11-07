@@ -1,12 +1,11 @@
-import { FlatList, View, StyleSheet,Image,ActivityIndicator,Pressable } from 'react-native';
+import { FlatList, View, StyleSheet,Image,ActivityIndicator,Pressable, Alert } from 'react-native';
 import Text from '../Text';
 import useRepositories from '../../hooks/useRepositories';
 import { Item } from './RepositoryItem';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer,createNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import React, { createContext, useContext, useState,useEffect } from 'react';
-
+import  DetailsScreen  from './Details';
+import ReviewForm from  './ReviewForm';
 
 
 
@@ -157,30 +156,28 @@ const repositories = [
 const ItemSeparator = () => <View style={styles.separator} />;
 
 
-
   
 const RepositoryList = ({ navigation }) => {
   const { data,  error,loading } = useRepositories();
   
-  const onPressFunction = () => {
-    navigation.navigate('Details');
-  };
- // console.log('Chris - Index',data,error,loading);
+  const onPressFunction = (data) => {
+    navigation.navigate('Details', data.id);
 
-  if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
+  };
+    if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   if (error) return <Text>Error: {error.message}</Text>;
   return (
     <>
       
-      <Pressable onPress={onPressFunction}>
+      
           <FlatList
             data={data}
             ItemSeparatorComponent={ItemSeparator}
-            renderItem={({item}) => <Item data={item} navigation={{ navigation }} />}
+            renderItem={({item}) => <Pressable onPress={()=>onPressFunction(item)}><Item data={item} navigation={{ navigation }} /></Pressable>}
             keyExtractor={item => item.id}
           // other props
           />
-      </Pressable>
+      
          
     </>
   );
@@ -190,11 +187,18 @@ const RepositoryList = ({ navigation }) => {
 
 const Stack = createNativeStackNavigator();
 
-const App = () => {
+
+
+
+
+
+const App = ({form}) => {
+  
+  
   return (
     
-    <NavigationContainer height='20' options={{height: 10}} >
-    <Stack.Navigator initialRouteName="Home" height="10" screenOptions={{
+    <NavigationContainer  height='20' options={{height: 10}} >
+    <Stack.Navigator initialRouteName={(form?form:"Home")} height="10" screenOptions={{
         headerMode: 'float',
         headerTintColor: 'white',
         height: 10,
@@ -203,11 +207,17 @@ const App = () => {
           fontWeight: 'bold',height:10
         }
       }} >
-      <Stack.Screen  options={{headerShown: false}}  name="Home" component={RepositoryList} />
-      <Stack.Screen  options={{height:10,width:20}}  name="Details" component={RepositoryList} />
+      <Stack.Screen  options={{headerShown: false}}   name="Home" component={RepositoryList} />
+      <Stack.Screen  options={{height:10,width:20}}   path=":userId" name="Details" component={DetailsScreen} />
+      <Stack.Screen  options={{height:10,width:20}} title="Create Reviews"  path=":reviewform" name="Review" component={ReviewForm} />
+
     </Stack.Navigator>
   </NavigationContainer>
   );
 };
 //export default RepositoryList;
+
+
 export default App;
+
+

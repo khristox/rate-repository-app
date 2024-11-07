@@ -2,14 +2,15 @@ import { View, StyleSheet,Pressable,ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import Text from './Text';
 import theme from '../thmes/themes';
-import { Link } from "react-router-native";
-import { GET_ME } from '../graphql/queries';
-import { useQuery, gql } from '@apollo/client';
+import { Link ,useNavigation} from "react-router-native";
+
 import { useAuth } from '../contexts/AuthContext';
 import {  useEffect,useState } from 'react';
-import {GetUser} from '../hooks/useSignIn';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAuthStorage from '../hooks/useAuthStorage';
+
+import uuid from 'react-native-uuid';
+
+
 const styles = StyleSheet.create({
     container: {
       paddingTop: Constants.statusBarHeight,
@@ -40,16 +41,23 @@ const styles = StyleSheet.create({
                 <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Sign IN!</Text>
                 </Link>
               </View>
+              <View>
+                <Link to="/signUp">
+                <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Sign Up</Text>
+                </Link>
+              </View>
               </>
     );
   };
 
+  
 
   
   const USER_NAME="user.username";
 
   const AppBar = () => {
     const { reset } = useAuth();
+    
     
     const authStorage = new useAuthStorage();
    
@@ -62,7 +70,7 @@ const styles = StyleSheet.create({
       const fetchItem = async () => {
         try {
           const storedItem = await authStorage.getRecord(USER_NAME); // Replace 'myKey' with your key
-         // console.log('App Bar',USER_NAME,storedItem)
+      
           if (storedItem !== null) {
              setUser(storedItem); // Store the retrieved item in state
           } 
@@ -78,6 +86,27 @@ const styles = StyleSheet.create({
       fetchItem();
     }, [reset ]);
 
+         
+    
+    const onLinkClick = (e) => {
+      //e.preventDefault();
+    //  console.log(e);
+     // history.push('/your-route');
+   };
+      function changeLocation(e){
+       // this.props.navigation.state.routeName
+        console.log('Location',e.props);
+        /* const router = useRoute();
+
+        router.push({ pathname: '/empty' });
+        router.replace({ pathname: {placeToGo} });
+        console.log(placeToGo); */
+        
+
+       // navigate(placeToGo, { replace: true });
+       // window.location.reload();
+      }
+
         return <View style={[styles.container,styles.flexContainer]}>
                   <ScrollView horizontal>
 
@@ -87,12 +116,13 @@ const styles = StyleSheet.create({
                         <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Repositories</Text>
                         </Link>
                       </View>
-                      <Component user={user}/>
                       <View>
-                        <Link to="/signin">
-                        <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Sign In!</Text>
+                        <Link  reloadDocument to={{pathname: '/createReview', state: 'flushDeal',params:uuid.v4() }}  onPress={changeLocation}  >
+                        <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Create Review</Text>
                         </Link>
                       </View>
+                      <Component user={user}/>
+                      
                       <View>
                         <Link to="/massindex">
                         <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Mass Index</Text>

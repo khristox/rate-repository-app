@@ -43,7 +43,7 @@ const BodyMassIndexCalculator = () => {
     const height = parseFloat(values.height);
 
     if (!isNaN(mass) && !isNaN(height) && height !== 0) {
-      console.log(`Your body mass index is: ${getBodyMassIndex(mass, height)}`);
+      (`Your body mass index is: ${getBodyMassIndex(mass, height)}`);
     }
   };
 

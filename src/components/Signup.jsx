@@ -45,9 +45,6 @@ const styles = StyleSheet.create({
       },
   });
 
-  const WhatIsMyPlatform = () => {
-    return <Text style={styles.text}>Your platform is: {Platform.OS} Version: {Platform.Version} {}</Text>;
-  };
 
  //   const [signIn] = useSignIn();
   
@@ -56,25 +53,27 @@ const styles = StyleSheet.create({
     
 
     const initialValues = {
-        username: 'kalle',
+        username: 'khristox',
         password: 'password',
+        passwordConfirmation: 'password',
     };
  
 const validationSchema = yup.object().shape({
     username: yup
       .string()
-      .max(50,'Too long')
-      .min(1, 'Too short')
+      .max(30,'Too long')
+      .min(5, 'Too short')
       .required('User name is required'),
     password: yup
       .string()
       .max(50,'Too long')
-      .min(4, 'Password Too short')
+      .min(5, 'Password Too short')
       .required('Password is  required'),
-  
+    passwordConfirmation: yup.string()
+      .oneOf([yup.ref('password'), null], 'Passwords must match')
   });
   
-const SignInForm = () => {
+const SignUpForm = () => {
    
   const navigate = useNavigate();
 
@@ -134,7 +133,7 @@ const SignInForm = () => {
     return <>
             <SafeAreaView style={[styles.container,{padding:20}]}>
             <Text style={styles.paragraph}>
-               Please use this form to log into.
+              The Sign Up Form .
             </Text>
             
             <Card >
@@ -155,10 +154,18 @@ const SignInForm = () => {
                  {formik.touched.password && formik.errors.password && (
                     <Text style={{ color: 'red' }}>{formik.errors.password}</Text>
                 )}
+                <TextInput secureTextEntry={true} style={[styles.para1]}
+                    placeholder="Password Confirnamtion"
+                    value={formik.values.passwordConfirmation}
+                    onChangeText={formik.handleChange('passwordConfirmation')}
+                />
+                 {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation && (
+                    <Text style={{ color: 'red' }}>{formik.errors.passwordConfirmation}</Text>
+                )}
                 <Button
                     onPress={formik.handleSubmit}
                     title="Log In"
-                    color="#841584"
+                    color="#0b0472"
                     accessibilityLabel="Log In"
                     />
                     
@@ -166,11 +173,11 @@ const SignInForm = () => {
                   
             </Card>
             </SafeAreaView>
-            <WhatIsMyPlatform/>
+            
             
     </>;
   }
 
 
 
-export default SignInForm;
+export default SignUpForm;

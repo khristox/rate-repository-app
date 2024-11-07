@@ -10,7 +10,7 @@ import AuthStorage from './src/utils/authStorage';
 import AuthStorageContext from './src/contexts/AuthStorageContext';
 
 import { AuthProvider } from './src/contexts/AuthContext';
-
+import { useRef } from 'react';
 
 import Constants from 'expo-constants';
 

@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 
 import { FlatList } from 'react-native';
 import { useQuery, gql } from '@apollo/client';
-import { GET_REPOSITORIES,GET_REPOSITORY } from '../graphql/queries';
+import { GET_REPOSITORIES,GET_REPOSITORY,GET_REVIEWS } from '../graphql/queries';
+import { useRoute } from '@react-navigation/native';
 
 
 const useRepositories = () => {
@@ -28,16 +29,25 @@ const useRepositories = () => {
 };
 
 
-export const useRepository = () => {
+export const useRepository = (iD) => {
  
-
-  let { data, error,loading } = useQuery(GET_REPOSITORY("jaredpalmer.formik"),{  fetchPolicy: 'cache-and-network',});
-  const repositoryNodes =data && data.repositories
-    ? data.repositories.edges.map(edge => edge.node)
-    : [];
-    data =repositoryNodes;
+  //const route = useRoute();
+  //const id= route.params;
+  let { data, error,loading } = useQuery(GET_REPOSITORY,{  variables: { id: iD}, fetchPolicy: 'cache-and-network',});
   return {data,  error,loading};
-  //return { repositories, loading, refetch: fetchRepositories };
+  
+};
+
+export const getReviews = (iD) => {
+ 
+  //const route = useRoute();
+  //const id= route.params;
+  let { data, error,loading } = useQuery(GET_REVIEWS,{  variables: { id: iD}, fetchPolicy: 'cache-and-network',});
+  
+  data=data?data.repository.reviews.edges.map(repo=>repo.node):data; //replace data if undefined with array 
+
+  return {data,  error,loading};
+  
 };
 
 export default useRepositories;
