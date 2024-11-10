@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client'
-import { POST_AUTHENTICATE } from '../graphql/mutations';
+import { POST_SIGNUP } from '../graphql/mutations';
 
 import useAuthStorage from '../hooks/useAuthStorage';
 
@@ -17,7 +17,7 @@ const useSignUp = (triggerReset) => {
 
  
     //const [authenticate, result] = useMutation(POST_AUTHENTICATE);
-    const [authenticate, result] = useMutation(POST_AUTHENTICATE,{
+    const [createUser, result] = useMutation(POST_SIGNUP,{
       onSuccess: (data) => {
         //console.log(data)
       },
@@ -26,9 +26,6 @@ const useSignUp = (triggerReset) => {
       //  triggerReset(); 
       },
       onCompleted: async (data) => {
-        
-        let username =data.authenticate.user.username;
-        let token =`${data.authenticate.accessToken}`
        
       }
     } );
@@ -36,7 +33,7 @@ const useSignUp = (triggerReset) => {
     const signUp = async ({ username, password }) => {
         
 
-        const resultvalues= await authenticate({  variables: {  "credentials": {
+        const resultvalues= await createUser({  variables: {  "user": {
             "username": username,
             "password": password
           }} });

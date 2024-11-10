@@ -28,11 +28,17 @@ const styles = StyleSheet.create({
     return (
         user !==null  && user.length>0   ?
              <>
-             <View>
-                <Link to="/signout">
-                <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Sign Out!</Text>
-                </Link>
-              </View>
+             
+                <View>
+                  <Link  reloadDocument to={{pathname: '/createReview', state: 'flushDeal',params:uuid.v4() }}    >
+                  <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Create Review</Text>
+                  </Link>
+                </View>
+                <View>
+                  <Link to="/signout">
+                  <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Sign Out!</Text>
+                  </Link>
+                </View>
               </> 
               :
               <>
@@ -93,20 +99,7 @@ const styles = StyleSheet.create({
     //  console.log(e);
      // history.push('/your-route');
    };
-      function changeLocation(e){
-       // this.props.navigation.state.routeName
-        console.log('Location',e.props);
-        /* const router = useRoute();
-
-        router.push({ pathname: '/empty' });
-        router.replace({ pathname: {placeToGo} });
-        console.log(placeToGo); */
-        
-
-       // navigate(placeToGo, { replace: true });
-       // window.location.reload();
-      }
-
+      
         return <View style={[styles.container,styles.flexContainer]}>
                   <ScrollView horizontal>
 
@@ -116,11 +109,7 @@ const styles = StyleSheet.create({
                         <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Repositories</Text>
                         </Link>
                       </View>
-                      <View>
-                        <Link  reloadDocument to={{pathname: '/createReview', state: 'flushDeal',params:uuid.v4() }}  onPress={changeLocation}  >
-                        <Text fontWeight="bold" fontSize="subheading" style={{ padding: 10 ,color: `#FFFFF0`}}>Create Review</Text>
-                        </Link>
-                      </View>
+                     
                       <Component user={user}/>
                       
                       <View>

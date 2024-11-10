@@ -7,6 +7,7 @@ import useSignIn from '../hooks/useSignIn';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-native';
 import { useAuth } from '../contexts/AuthContext';
+import useSignUp from '../hooks/useSignUp';
 
 
 
@@ -78,6 +79,7 @@ const SignUpForm = () => {
   const navigate = useNavigate();
 
   const [signIn]= useAuth().signIn();
+  const [signUp]= useSignUp();;
 
 
   const onSubmit = async (values) => {
@@ -87,7 +89,11 @@ const SignUpForm = () => {
     const { username, password } = values;
 
     try {
-      const  {data,errors} = await signIn({ username, password });
+      //const  {data,errors} = await signIn({ username, password });
+      
+      
+      const {data,errors} = await signUp({ username, password });
+      const signRes = await signIn({ username, password });
       data && navigate('/'); 
       
     //  const err=errors.reduce(function(result,err){return result.concat(err)});

@@ -6,7 +6,9 @@ import { NavigationContainer,createNavigationContainerRef } from '@react-navigat
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import  DetailsScreen  from './Details';
 import ReviewForm from  './ReviewForm';
-
+import RepoMenu from './RepoMenu';
+import useSharedId from './useSharedState';
+import React, { useState }  from 'react';
 
 
 
@@ -158,7 +160,12 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
   
 const RepositoryList = ({ navigation }) => {
-  const { data,  error,loading } = useRepositories();
+
+  
+  
+  const [sharedState, setSharedState] = useState(0);
+  
+  const { data,  error,loading } = useRepositories(sharedState);
   
   const onPressFunction = (data) => {
     navigation.navigate('Details', data.id);
@@ -166,10 +173,13 @@ const RepositoryList = ({ navigation }) => {
   };
     if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   if (error) return <Text>Error: {error.message}</Text>;
+  
+//    console.log(sharedState);
+
   return (
     <>
-      
-      
+         
+         <RepoMenu sharedState={sharedState} setSharedState={setSharedState}/>
           <FlatList
             data={data}
             ItemSeparatorComponent={ItemSeparator}
@@ -177,7 +187,6 @@ const RepositoryList = ({ navigation }) => {
             keyExtractor={item => item.id}
           // other props
           />
-      
          
     </>
   );
@@ -193,7 +202,6 @@ const Stack = createNativeStackNavigator();
 
 
 const App = ({form}) => {
-  
   
   return (
     

@@ -6,7 +6,7 @@ import { GET_REPOSITORIES,GET_REPOSITORY,GET_REVIEWS } from '../graphql/queries'
 import { useRoute } from '@react-navigation/native';
 
 
-const useRepositories = () => {
+const useRepositories = (varItem) => {
   const fetchRepositories =  () => {
    // setLoading(true);
 
@@ -20,8 +20,33 @@ const useRepositories = () => {
    // setError(error);
   };
 
+  const jsonData = {};
+  const jsonvariables = {};
+  
+    if(varItem==="1")
+    {
+      jsonData["orderBy"] = "CREATED_AT";
+     
+      jsonvariables["variables"] = jsonData;
+    } else if (varItem==="2"){
+      jsonData["orderBy"] = "RATING_AVERAGE";
+      jsonData["orderDirection"] = "DESC";
+      jsonvariables["variables"] = jsonData;
+    } else if (varItem==="3"){
+      jsonData["orderBy"] = "RATING_AVERAGE";
+      jsonData["orderDirection"] = "ASC";
+      jsonvariables["variables"] = jsonData;
+    }
+    
 
-  let { data, error,loading } = useQuery(GET_REPOSITORIES,{  fetchPolicy: 'cache-and-network',});
+    let { data, error,loading } = useQuery(GET_REPOSITORIES, {
+      variables:jsonData
+      , fetchPolicy: 'cache-and-network',});
+      
+  
+  /* let { data, error,loading } = useQuery(GET_REPOSITORIES, {variables:{ "orderDirection": "ASC",
+  "orderBy": "RATING_AVERAGE"}},  {  fetchPolicy: 'cache-and-network',});
+   */
   data=data?data.repositories.edges.map(repo=>repo.node):data; //replace data if undefined with array 
 
   return {data,  error,loading};

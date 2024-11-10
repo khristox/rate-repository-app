@@ -9,8 +9,7 @@ import * as Linking from 'expo-linking';
 
 
 const DetailsScreen = ({ navigation,route }) => {
-  console.log('DetailsScreen');
-  const handlePress = (rec) => {
+              const handlePress = (rec) => {
         //alert(rec.ownerAvatarUrl);
         Linking.openURL(rec.ownerAvatarUrl)
       };

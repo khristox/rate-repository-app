@@ -33,4 +33,13 @@ mutation CreateReview($review: CreateReviewInput) {
   }
 }
 `
+
+export const POST_SIGNUP = gql`
+mutation CreateUser($user: CreateUserInput) {
+  createUser(user: $user) {
+    username
+    createdAt
+  }
+}
+`
 // other queries...
